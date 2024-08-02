@@ -3,22 +3,29 @@
 #include "projeto-arvores.h"
 
 int main() {
-    char nomeArquivo[] = "testeDados.csv";
-    FILE *file = abrirArquivo(nomeArquivo);
+    char *fileName = "testeDados.csv";
+    FILE *file = openFile(fileName);
 
-    int numFuncionarios;
-    Funcionario *funcionarios = lerArquivo(file, &numFuncionarios);
+    int numEmployees = 13;
+    Employee *employees = readFile(file, &numEmployees);
 
-    printf("Sem ordenar\n");
-    listaFuncionarios(funcionarios, 13);
+    // Testando
+    // printf("Desordenado\n");
+    // listEmployees(employees, numEmployees);
 
-    Funcionario *sortedFuncionarios = countingSort(funcionarios, numFuncionarios);
+    Employee *sortedEmployees = countingSort(employees, numEmployees);
 
-    printf("\n\nOrdenado\n");
-    listaFuncionarios(sortedFuncionarios, 13);
+    // Testando
+    // printf("\n\nOrdenado\n");
+    // listEmployees(sortedEmployees, numEmployees);
 
-    free(funcionarios);
-    fecharArquivo(file);
+    fileName = "dadosOrdenados.csv";
+    saveToFile(sortedEmployees, numEmployees, fileName);
+
+    free(employees);
+    free(sortedEmployees);
+    closeFile(file);
 
     return 0;
 }
+

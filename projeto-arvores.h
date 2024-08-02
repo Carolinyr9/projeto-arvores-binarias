@@ -1,8 +1,15 @@
+typedef struct {
+    int id;
+    char *name;
+    int age;
+    char *department;
+    float salary;
+} Employee;
 
-typedef struct funcionario Funcionario;
-
-FILE* abrirArquivo(char *nomeArquivo);
-Funcionario* lerArquivo(FILE *file, int *numFuncionarios);
-void fecharArquivo(FILE *file);
-void listaFuncionarios(Funcionario *funcionarios, int numFuncionarios);
-Funcionario* countingSort(Funcionario array[], int size);
+FILE* openFile(char *fileName); // PROBLEMAS AQUI AINDA
+Employee* readFile(FILE *file, int *numEmployees);
+void listEmployees(Employee *employees, int numEmployees);
+void closeFile(FILE *file);
+Employee* countingSort(Employee array[], int size);
+void saveToFile(Employee array[], int size, char *fileName);
+char* convertEmployeesToString(Employee array[], int size);

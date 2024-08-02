@@ -1,13 +1,14 @@
 # depslib dependency file v1.0
-1722468162 source:c:\users\carol\onedrive\documentos\estudos\faculdade\estrutura-de-dados 2\projeto-arvores\projeto-arvores.c
+1722561317 source:c:\users\carol\onedrive\documentos\estudos\faculdade\estrutura-de-dados 2\projeto-arvores\projeto-arvores.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	"projeto-arvores.h"
 
-1722468138 source:c:\users\carol\onedrive\documentos\estudos\faculdade\estrutura-de-dados 2\projeto-arvores\main.c
+1722560540 source:c:\users\carol\onedrive\documentos\estudos\faculdade\estrutura-de-dados 2\projeto-arvores\main.c
 	<stdio.h>
 	<stdlib.h>
 	"projeto-arvores.h"
 
-1722466894 c:\users\carol\onedrive\documentos\estudos\faculdade\estrutura-de-dados 2\projeto-arvores\projeto-arvores.h
+1722561317 c:\users\carol\onedrive\documentos\estudos\faculdade\estrutura-de-dados 2\projeto-arvores\projeto-arvores.h
 

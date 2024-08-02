@@ -1,74 +1,101 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "projeto-arvores.h"
 
-typedef struct funcionario {
-    int id;
-    char *nome;
-    int idade;
-    char *departamento;
-    float salario;
-} Funcionario;
-
-FILE* abrirArquivo(char *nomeArquivo) {
-    FILE *file = fopen(nomeArquivo, "r");
+FILE* openFile(char *fileName) {
+    FILE *file = fopen(fileName, "r");
     if (file == NULL) {
-        printf("\n\tErro ao abrir o arquivo!\n");
+        printf("Erro de abertura no arquivo!\n");
         system("pause");
         exit(1);
     }
     return file;
 }
 
-Funcionario* lerArquivo(FILE *file, int *numFuncionarios) {
-    size_t capacidade = 13;
-    *numFuncionarios = 0;
-    Funcionario *funcionarios = malloc(capacidade * sizeof(Funcionario));
-    if (!funcionarios) {
-        perror("Erro ao alocar memória");
+Employee* readFile(FILE *file, int *numEmployees) {
+    size_t capacity = 13;
+    *numEmployees = 0;
+    Employee *employees = malloc(capacity * sizeof(Employee));
+    if (!employees) {
+        perror("Erro de alocacao de memoria\n");
         exit(1);
     }
 
     char buffer[1024];
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
-        if (*numFuncionarios >= capacidade) {
-            capacidade *= 2;
-            funcionarios = realloc(funcionarios, capacidade * sizeof(Funcionario));
-            if (!funcionarios) {
-                perror("Erro ao realocar memória");
+        if (*numEmployees >= capacity) {
+            capacity *= 2;
+            employees = realloc(employees, capacity * sizeof(Employee));
+            if (!employees) {
+                perror("Erro de alocacao de memoria\n");
                 exit(1);
             }
         }
 
-        Funcionario funcionario;
-        funcionario.id = atoi(strtok(buffer, ","));
-        funcionario.nome = strdup(strtok(NULL, ","));
-        funcionario.idade = atoi(strtok(NULL, ","));
-        funcionario.departamento = strdup(strtok(NULL, ","));
-        funcionario.salario = atof(strtok(NULL, "\n"));
+        Employee employee;
+        /* Tentativa 1 de conseguir pegar o salário
+        employee.id = atoi(strtok(buffer, ","));
+        employee.name = strdup(strtok(NULL, ","));
+        employee.age = atoi(strtok(NULL, ","));
+        employee.department = strdup(strtok(NULL, ","));
+        employee.salary = atof(strtok(NULL, "\n"));*/
 
-        funcionarios[*numFuncionarios] = funcionario;
-        (*numFuncionarios)++;
+        // Tentativa 2 de conseguir pegar o salário
+        char *token;
+
+        // ID
+        token = strtok(buffer, ",");
+        if (token != NULL) {
+            employee.id = atoi(token);
+        }
+
+        // Name
+        token = strtok(NULL, ",");
+        if (token != NULL) {
+            employee.name = strdup(token);
+        }
+
+        // Age
+        token = strtok(NULL, ",");
+        if (token != NULL) {
+            employee.age = atoi(token);
+        }
+
+        // Department
+        token = strtok(NULL, ",");
+        if (token != NULL) {
+            employee.department = strdup(token);
+        }
+
+        // Salary
+        token = strtok(NULL, "\n"); // Read till end of line
+        if (token != NULL) {
+            employee.salary = atof(token);
+        }
+
+        employees[*numEmployees] = employee;
+        (*numEmployees)++;
     }
 
-    return funcionarios;
+    return employees;
 }
 
-//FUNÇÃO DE TESTE PARA VER SE OS FUNCIONÁRIOS ESTÃO SENDO PEGOS CORRETAMENTE
-void listaFuncionarios(Funcionario *funcionarios, int numFuncionarios) {
-    for (int i = 0; i < numFuncionarios; i++) { // Correção: i < numFuncionarios
-        printf("ID: %d, Nome: %s, Idade: %d, Departamento: %s, Salário: %.2f\n",
-               funcionarios[i].id, funcionarios[i].nome, funcionarios[i].idade,
-               funcionarios[i].departamento, funcionarios[i].salario);
+// Test function to verify if the employees are being read correctly
+void listEmployees(Employee *employees, int numEmployees) {
+    for (int i = 0; i < numEmployees; i++) {
+        printf("ID: %d, Name: %s, Age: %d, Department: %s, Salary: %.2f\n",
+               employees[i].id, employees[i].name, employees[i].age,
+               employees[i].department, employees[i].salary);
     }
 }
 
-void fecharArquivo(FILE *file) {
+void closeFile(FILE *file) {
     fclose(file);
 }
 
-// Função do couting sort
-Funcionario* countingSort(Funcionario array[], int size) {
+// Counting sort function
+Employee* countingSort(Employee array[], int size) {
     if (size <= 0) return NULL;
 
     int maxVal = array[0].id;
@@ -79,7 +106,7 @@ Funcionario* countingSort(Funcionario array[], int size) {
     }
 
     int *count = (int *)calloc(maxVal + 1, sizeof(int));
-    Funcionario *output = (Funcionario *)malloc(size * sizeof(Funcionario));
+    Employee *output = (Employee *)malloc(size * sizeof(Employee));
 
     for (int i = 0; i < size; i++) {
         count[array[i].id]++;
@@ -98,24 +125,49 @@ Funcionario* countingSort(Funcionario array[], int size) {
     return output;
 }
 
-void gravarNoArquivo(Funcionario array[], int size){
-    FILE *file;
-    file = fopen("dadosOrdenados.csv", "w");
-    if(file == NULL){
-        printf("Erro ao abrir funcs.bin!\n");
+void saveToFile(Employee array[], int size, char *fileName) {
+    FILE *file = fopen(fileName, "w");
+    if (file == NULL) {
+        printf("Error opening file!\n");
         system("pause");
         exit(1);
     }
 
-    char *linha;
-    for(int i = 0; i < size; i++){ // A FAZER AINDA
-        linha = strcat((char)array.id, ',');
-        strcat(array.nome, ',');
-        strcat((char)array.idade, ',');
-        strcat(array.departamento, ',');
-        strcat((char)array.salario, ',');
+    char *data = convertEmployeesToString(array, size);
+    fputs(data, file);
 
+    fclose(file);
+    free(data); // Libera a memória alocada para a string
+}
+
+char* convertEmployeesToString(Employee array[], int size) {
+    char* line = malloc(1024 * size);
+    if (line == NULL) {
+        perror("Memory allocation failed");
+        exit(EXIT_FAILURE);
+    }
+    line[0] = '\0';
+
+    char temp[300];
+    for (int i = 0; i < size; i++) {
+        sprintf(temp, "%d", array[i].id);
+        strcat(line, temp);
+        strcat(line, ",");
+
+        strcat(line, array[i].name);
+        strcat(line, ",");
+
+        sprintf(temp, "%d", array[i].age);
+        strcat(line, temp);
+        strcat(line, ",");
+
+        strcat(line, array[i].department);
+        strcat(line, ",");
+
+        sprintf(temp, "%.2f", array[i].salary);
+        strcat(line, temp);
+        strcat(line, "\n");
     }
 
-    texto = fwrite(funcs, sizeof(FUNC), 5, file);
+    return line;
 }
