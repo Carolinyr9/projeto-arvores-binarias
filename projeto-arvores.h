@@ -2,8 +2,9 @@ typedef struct {
     int id;
     char *name;
     int age;
+    char *company;
     char *department;
-    float salary;
+    double salary;
 } Employee;
 
 FILE* openFile(char *fileName); // PROBLEMAS AQUI AINDA
