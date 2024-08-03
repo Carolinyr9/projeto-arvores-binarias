@@ -34,45 +34,12 @@ Employee* readFile(FILE *file, int *numEmployees) {
         }
 
         Employee employee;
-        /* Tentativa 1 de conseguir pegar o salário
         employee.id = atoi(strtok(buffer, ","));
         employee.name = strdup(strtok(NULL, ","));
         employee.age = atoi(strtok(NULL, ","));
+        employee.company = strdup(strtok(NULL, ","));
         employee.department = strdup(strtok(NULL, ","));
-        employee.salary = atof(strtok(NULL, "\n"));*/
-
-        // Tentativa 2 de conseguir pegar o salário
-        char *token;
-
-        // ID
-        token = strtok(buffer, ",");
-        if (token != NULL) {
-            employee.id = atoi(token);
-        }
-
-        // Name
-        token = strtok(NULL, ",");
-        if (token != NULL) {
-            employee.name = strdup(token);
-        }
-
-        // Age
-        token = strtok(NULL, ",");
-        if (token != NULL) {
-            employee.age = atoi(token);
-        }
-
-        // Department
-        token = strtok(NULL, ",");
-        if (token != NULL) {
-            employee.department = strdup(token);
-        }
-
-        // Salary
-        token = strtok(NULL, "\n"); // Read till end of line
-        if (token != NULL) {
-            employee.salary = atof(token);
-        }
+        employee.salary = atof(strtok(NULL, "\n"));
 
         employees[*numEmployees] = employee;
         (*numEmployees)++;
@@ -84,8 +51,8 @@ Employee* readFile(FILE *file, int *numEmployees) {
 // Test function to verify if the employees are being read correctly
 void listEmployees(Employee *employees, int numEmployees) {
     for (int i = 0; i < numEmployees; i++) {
-        printf("ID: %d, Name: %s, Age: %d, Department: %s, Salary: %.2f\n",
-               employees[i].id, employees[i].name, employees[i].age,
+        printf("ID: %d, Name: %s, Age: %d, Company: %s, Department: %s, Salary: %.2f\n",
+               employees[i].id, employees[i].name, employees[i].age, employees[i].company,
                employees[i].department, employees[i].salary);
     }
 }
@@ -159,6 +126,9 @@ char* convertEmployeesToString(Employee array[], int size) {
 
         sprintf(temp, "%d", array[i].age);
         strcat(line, temp);
+        strcat(line, ",");
+
+        strcat(line, array[i].company);
         strcat(line, ",");
 
         strcat(line, array[i].department);

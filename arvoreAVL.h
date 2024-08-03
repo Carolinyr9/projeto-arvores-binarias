@@ -1,21 +1,3 @@
-typedef struct {
-    int id;
-    char *name;
-    int age;
-    char *company;
-    char *department;
-    double salary;
-} Employee;
-
-FILE* openFile(char *fileName); // PROBLEMAS AQUI AINDA
-Employee* readFile(FILE *file, int *numEmployees);
-void listEmployees(Employee *employees, int numEmployees);
-void closeFile(FILE *file);
-Employee* countingSort(Employee array[], int size);
-void saveToFile(Employee array[], int size, char *fileName);
-char* convertEmployeesToString(Employee array[], int size);
-
-
 typedef struct NO *arvAVL;
 
 arvAVL *cria_arvAVL();
@@ -44,7 +26,7 @@ void posOrdem_arvAVL(arvAVL *raiz);
 
 void confirmaInsercao(int x);
 
-int insere_arvAVL(arvAVL *raiz, Employee *dados);
+int insere_arvAVL(arvAVL *raiz, Employee dados);
 
 int remove_arvAVL(arvAVL *raiz, int valor);
 

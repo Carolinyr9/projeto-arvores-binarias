@@ -5,9 +5,16 @@
 int main() {
     char *fileName = "testeDados.csv";
     FILE *file = openFile(fileName);
+    arvAVL *arvoreAVL = cria_arvAVL();
+    int check;
 
     int numEmployees = 13;
     Employee *employees = readFile(file, &numEmployees);
+
+    for(int i = 0; i < sizeof(employees);i++){
+        check = insere_arvAVL(arvoreAVL, employees);
+        confirmaInsercao(check);
+    }
 
     // Testando
     // printf("Desordenado\n");
