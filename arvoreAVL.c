@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include "projeto-arvores.h"
 
-struct NO{
-    Employee dados;
-    int alt;
-    struct NO *esq;
-    struct NO *dir;
-};
-
 arvAVL *cria_arvAVL(){
     arvAVL *raiz = (arvAVL*) malloc(sizeof(arvAVL));
     if(raiz != NULL){
@@ -17,7 +10,7 @@ arvAVL *cria_arvAVL(){
     return raiz;
 }
 
-int alt_no(struct NO *no){
+int alt_no(struct NO_arvoreAVL *no){
     if(no == NULL){
         return -1;
     }else{
@@ -33,12 +26,12 @@ int maior(int x, int y){
     }
 }
 
-int fatorBalanceamento_NO(struct NO *no){
+int fatorBalanceamento_NO(struct NO_arvoreAVL *no){
     return abs(alt_no(no->esq) - alt_no(no->dir));
 }
 
 void rotacaoLL(arvAVL *A){
-    struct NO *B;
+    struct NO_arvoreAVL *B;
     B = (*A)->esq;
     (*A)->esq = B->dir;
     B->dir = *A;
@@ -48,7 +41,7 @@ void rotacaoLL(arvAVL *A){
 }
 
 void rotacaoRR(arvAVL *A){
-    struct NO *B;
+    struct NO_arvoreAVL *B;
     B = (*A)->dir;
     (*A)->dir = B->esq;
     B->esq = *A;
@@ -67,7 +60,7 @@ void rotacaoRL(arvAVL *A){
     rotacaoRR(A);
 }
 
-void libera_NO(struct NO *no){
+void libera_NO(struct NO_arvoreAVL *no){
     if(no == NULL){
         return;
     }
@@ -123,101 +116,75 @@ int totalNO_arvAVL(arvAVL * raiz){
     return(alt_esq + alt_dir + 1);
 }
 
-void preOrdem_arvAVL(arvAVL *raiz){
-    if(raiz == NULL){
-        return;
-    }
-    if(*raiz == NULL){
-        printf("%d\n", (*raiz)->dados);
-        preOrdem_arvAVL(&((*raiz)->esq));
-        preOrdem_arvAVL(&((*raiz)->dir));
-    }
-}
-
 void emOrdem_arvAVL(arvAVL *raiz){
-    if(raiz == NULL){
+    if(raiz == NULL || *raiz == NULL){
         return;
     }
-    if(*raiz == NULL){
-        emOrdem_arvAVL(&((*raiz)->esq));
-        printf("%d\n", (*raiz)->dados);
-        emOrdem_arvAVL(&((*raiz)->dir));
-    }
+    emOrdem_arvAVL(&((*raiz)->esq));
+    printf("%d\n", (*raiz)->dados.id);
+    printf("%s\n", (*raiz)->dados.name);
+    printf("%d\n", (*raiz)->dados.age);
+    printf("%s\n", (*raiz)->dados.company);
+    printf("%s\n", (*raiz)->dados.department);
+    printf("%.2f\n\n", (*raiz)->dados.salary);
+    emOrdem_arvAVL(&((*raiz)->dir));
 }
 
-void posOrdem_arvAVL(arvAVL *raiz){
-    if(raiz == NULL){
-        return;
-    }
-    if(*raiz == NULL){
-        posOrdem_arvAVL(&((*raiz)->esq));
-        posOrdem_arvAVL(&((*raiz)->dir));
-        printf("%d\n", (*raiz)->dados);
-    }
-}
-
-void confirmaInsercao(int x){
+void confirmaInsercaoArvoreAVL(int x){
     if(x){
-        printf("Elemento inserido com sucesso. \n");
+        printf("Elemento inserido com sucesso na arvore AVL. \n");
     }else{
-        printf("Erro! Elemento nao inserido. \n");
+        printf("Erro! Elemento nao inserido na arvore AVL. \n");
     }
 }
 
 int insere_arvAVL(arvAVL *raiz, Employee *employee){
     int res;
-    if(*raiz == NULL){
-        struct NO *novo;
-        novo = (struct NO*) malloc(sizeof(struct NO));
-        if(novo == NULL){
+    if (*raiz == NULL) {
+        struct NO_arvoreAVL *novo;
+        novo = (struct NO_arvoreAVL*) malloc(sizeof(struct NO_arvoreAVL));
+        if (novo == NULL) {
             return 0;
         }
-        novo->dados = (struct Employee*) malloc(sizeof(struct Employee));
-        if (novo->dados == NULL) {
-            free(novo);
-            return 0;
-        }
-        *(novo->dados) = *employee;
+        novo->dados = *employee;
         novo->alt = 0;
         novo->esq = NULL;
         novo->dir = NULL;
         *raiz = novo;
         return 1;
     }
-    struct NO *atual = *raiz;
-    if(employee < atual->dados){
-        if((res = insere_arvAVL(&(atual->esq), employee)) == 1){
-            if(fatorBalanceamento_NO(atual) >= 2){
-                if(employee < (*raiz)->esq->dados){
+    struct NO_arvoreAVL *atual = *raiz;
+    if (employee->id < atual->dados.id) {
+        if ((res = insere_arvAVL(&(atual->esq), employee)) == 1) {
+            if (fatorBalanceamento_NO(atual) >= 2) {
+                if (employee->id < (*raiz)->esq->dados.id) {
                     rotacaoLL(raiz);
-                }else{
+                } else {
                     rotacaoLR(raiz);
                 }
             }
         }
-    }else{
-        if(employee > atual->dados){
-            if((res = insere_arvAVL(&(atual->dir), employee)) == 1){
-                if(fatorBalanceamento_NO(atual) >= 2){
-                    if((*raiz)->dir->dados < employee){
-                        rotacaoRR(raiz);
-                    }else{
-                        rotacaoRL(raiz);
-                    }
+    } else if (employee->id > atual->dados.id) {
+        if ((res = insere_arvAVL(&(atual->dir), employee)) == 1) {
+            if (fatorBalanceamento_NO(atual) >= 2) {
+                if ((*raiz)->dir->dados.id < employee->id) {
+                    rotacaoRR(raiz);
+                } else {
+                    rotacaoRL(raiz);
                 }
             }
-        }else{
-            printf("Elemento %d já existe. Insercao duplicada! \n", employee);
-            return 0;
         }
+    } else {
+        printf("Elemento %d já existe. Insercao duplicada! \n", employee->id);
+        return 0;
     }
     atual->alt = maior(alt_no(atual->esq), alt_no(atual->dir)) + 1;
     return res;
 }
 
-struct NO *procuramenor(struct NO *atual){
-    struct NO *no1 = atual;
-    struct NO *no2 = atual->esq;
+struct NO_arvoreAVL *procuramenor(struct NO_arvoreAVL *atual){
+    struct NO_arvoreAVL *no1 = atual;
+    struct NO_arvoreAVL *no2 = atual->esq;
     while(no2 != NULL){
         no1 = no2;
         no2 = no2->esq;
@@ -225,7 +192,7 @@ struct NO *procuramenor(struct NO *atual){
     return no1;
 }
 
-int remove_arvAVL(arvAVL *raiz, int valor) {
+/*int remove_arvAVL(arvAVL *raiz, int valor) {
     if (raiz == NULL) {
         return 0;
     }
@@ -252,7 +219,7 @@ int remove_arvAVL(arvAVL *raiz, int valor) {
         }
     } else {
         if (((*raiz)->esq == NULL) || (*raiz)->dir == NULL) {
-            struct NO *no_velho = (*raiz);
+            struct NO_arvoreAVL *no_velho = (*raiz);
             if ((*raiz)->esq != NULL) {
                 *raiz = (*raiz)->esq;
             } else {
@@ -260,7 +227,7 @@ int remove_arvAVL(arvAVL *raiz, int valor) {
             }
             free(no_velho);
         } else {
-            struct NO *temp = procuramenor((*raiz)->dir);
+            struct NO_arvoreAVL *temp = procuramenor((*raiz)->dir);
             (*raiz)->dados = temp->dados;
             remove_arvAVL(&(*raiz)->dir, (*raiz)->dados);
             if (fatorBalanceamento_NO(*raiz) >= 2) {
@@ -280,18 +247,18 @@ int remove_arvAVL(arvAVL *raiz, int valor) {
         (*raiz)->alt = maior(alt_no((*raiz)->esq), alt_no((*raiz)->dir)) + 1;
     }
     return res;
-}
+}*/
 
 consulta_arvAVL(arvAVL *raiz, int valor){
     if(raiz == NULL){
         return 0;
     }
-    struct NO *atual = *raiz;
+    struct NO_arvoreAVL *atual = *raiz;
     while(atual != NULL){
-        if(valor == atual->dados){
+        if(valor == atual->dados.id){
             return 1;
         }
-        if(valor > atual->dados){
+        if(valor > atual->dados.id){
             atual = atual->dir;
         }else{
             atual = atual->esq;
