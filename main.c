@@ -50,8 +50,10 @@ int main() {
     free(sortedEmployees);
     closeFile(file);
     liberar_arvAVL(arvoreAVL);
-    liberar_arvoreLLRB(arvoreAVL);
+    liberar_arvoreLLRB(arvLLRB);
 
+    printf("\n\n");
+    system("pause");
     return 0;
 }
 
