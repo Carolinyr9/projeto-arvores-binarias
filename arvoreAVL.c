@@ -78,16 +78,6 @@ void liberar_arvAVL(arvAVL *raiz){
     free(raiz);
 }
 
-int vazia_arvAVL(arvAVL *raiz){
-    if(raiz == NULL){
-        return 1;
-    }
-    if(*raiz == NULL){
-        return 1;
-    }
-    return 0;
-}
-
 int altura_arvAVL(arvAVL *raiz){
     if(raiz == NULL){
         return 0;
@@ -181,91 +171,3 @@ int insere_arvAVL(arvAVL *raiz, Employee *employee){
     atual->alt = maior(alt_no(atual->esq), alt_no(atual->dir)) + 1;
     return res;
 }
-
-struct NO_arvoreAVL *procuramenor(struct NO_arvoreAVL *atual){
-    struct NO_arvoreAVL *no1 = atual;
-    struct NO_arvoreAVL *no2 = atual->esq;
-    while(no2 != NULL){
-        no1 = no2;
-        no2 = no2->esq;
-    }
-    return no1;
-}
-
-/*int remove_arvAVL(arvAVL *raiz, int valor) {
-    if (raiz == NULL) {
-        return 0;
-    }
-    int res;
-    if (valor < (*raiz)->dados) {
-        if ((res = remove_arvAVL(&(*raiz)->esq, valor)) == 1) {
-            if (fatorBalanceamento_NO(*raiz) >= 2) {
-                if (alt_no((*raiz)->dir->esq) <= alt_no((*raiz)->dir->dir)) {
-                    rotacaoRR(raiz);
-                } else {
-                    rotacaoRL(raiz);
-                }
-            }
-        }
-    } else if ((*raiz)->dados < valor) {
-        if ((res = remove_arvAVL(&(*raiz)->dir, valor)) == 1) {
-            if (fatorBalanceamento_NO(*raiz) >= 2) {
-                if (alt_no((*raiz)->esq->dir) <= alt_no((*raiz)->esq->esq)) {
-                    rotacaoLL(raiz);
-                } else {
-                    rotacaoLR(raiz);
-                }
-            }
-        }
-    } else {
-        if (((*raiz)->esq == NULL) || (*raiz)->dir == NULL) {
-            struct NO_arvoreAVL *no_velho = (*raiz);
-            if ((*raiz)->esq != NULL) {
-                *raiz = (*raiz)->esq;
-            } else {
-                *raiz = (*raiz)->dir;
-            }
-            free(no_velho);
-        } else {
-            struct NO_arvoreAVL *temp = procuramenor((*raiz)->dir);
-            (*raiz)->dados = temp->dados;
-            remove_arvAVL(&(*raiz)->dir, (*raiz)->dados);
-            if (fatorBalanceamento_NO(*raiz) >= 2) {
-                if (alt_no((*raiz)->esq->dir) <= alt_no((*raiz)->esq->esq)) {
-                    rotacaoLL(raiz);
-                } else {
-                    rotacaoLR(raiz);
-                }
-            }
-        }
-        if (*raiz != NULL) {
-            (*raiz)->alt = maior(alt_no((*raiz)->esq), alt_no((*raiz)->dir) + 1);
-        }
-        return 1;
-    }
-    if (*raiz != NULL) {
-        (*raiz)->alt = maior(alt_no((*raiz)->esq), alt_no((*raiz)->dir)) + 1;
-    }
-    return res;
-}*/
-
-consulta_arvAVL(arvAVL *raiz, int valor){
-    if(raiz == NULL){
-        return 0;
-    }
-    struct NO_arvoreAVL *atual = *raiz;
-    while(atual != NULL){
-        if(valor == atual->dados.id){
-            return 1;
-        }
-        if(valor > atual->dados.id){
-            atual = atual->dir;
-        }else{
-            atual = atual->esq;
-        }
-    }
-    return 0;
-}
-
-
-

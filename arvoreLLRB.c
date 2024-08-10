@@ -154,27 +154,9 @@ void emOrdem_arvoreLLRB(arvoreLLRB *raiz){
     emOrdem_arvoreLLRB(&((*raiz)->dir));
 }
 
-/*consulta_arvoreLLRB(arvoreLLRB *raiz, int valor){
-    if(raiz == NULL){
-        return 0;
-    }
-    struct NO_arvoreLLRB *atual = *raiz;
-    while(atual != NULL){
-        if(valor == atual->dados){
-            return 1;
-        }
-        if(valor > atual->dados){
-            atual = atual->dir;
-        }else{
-            atual = atual->esq;
-        }
-    }
-    return 0;
-}*/
-
 int insere_arvoreLLRB(arvoreLLRB *raiz, Employee *dados){
     int resp;
-    *raiz = insereNO(*raiz, dados, &resp);  // Corrigido aqui
+    *raiz = insereNO(*raiz, dados, &resp);
     if((*raiz) != NULL){
         (*raiz)->cor = BLACK;
     }
@@ -224,67 +206,3 @@ void confirmaInsercaoArvoreLLRB(int x){
         printf("Erro! Elemento nao inserido na arvore rubro negra. \n");
     }
 }
-
-/*int remove_arvoreLLRB(arvoreLLRB *raiz, int valor){
-    if(consulta_arvoreLLRB(raiz, valor)){
-        struct NO_arvoreLLRB *H = *raiz;
-        *raiz = removeNO(H, valor);
-        if(*raiz != NULL){
-            (*raiz)->cor = BLACK;
-        }
-        return 1;
-    }else{
-        return 0;
-    }
-}*/
-
-
-struct NO_arvoreLLRB *removeMenor(struct NO_arvoreLLRB *H){
-    if(H->esq == NULL){
-        free(H);
-        return NULL;
-    }
-    if(cor(H->esq) == BLACK && cor(H->esq->esq) == BLACK){
-        H = move2EsqRED(H);
-    }
-    H->esq = removeMenor(H->esq);
-    return balancear(H);
-};
-
-struct NO_arvoreLLRB *procuraMenor(struct NO_arvoreLLRB *atual){
-    struct NO_arvoreLLRB *no1 = atual;
-    struct NO_arvoreLLRB *no2 = atual->esq;
-    while(no2 != NULL){
-        no1 = no2;
-        no2 = no2->esq;
-    }
-    return no1;
-};
-
-/*struct NO_arvoreLLRB *removeNO(struct NO_arvoreLLRB *H, int valor){
-    if(valor < H->dados){
-        if(cor(H->esq) == BLACK && cor(H->esq->esq) == BLACK){
-            H = move2EsqRED(H);
-        }
-        H->esq = removeNO(H->esq, valor);
-    }else{
-        if(cor(H->esq) == RED){
-            H = rotacionaDireita(H);
-        }
-        if(valor == H->dados && (H->dir == NULL)){
-            free(H);
-            return NULL;
-        }
-        if(cor(H->dir) == BLACK && cor(H->dir->esq) == BLACK){
-            H = move2DirRED(H);
-        }
-        if(valor == H->dados){
-            struct NO_arvoreLLRB *x = procuraMenor(H->dir);
-            H->dados = x->dados;
-            H->dir = removeMenor(H->dir);
-        }else{
-            H->dir = removeNO(H->dir, valor);
-        }
-    }
-    return balancear(H);
-};*/

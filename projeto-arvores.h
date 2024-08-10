@@ -9,12 +9,20 @@ typedef struct {
 } Employee;
 
 FILE* openFile(char *fileName); // PROBLEMAS AQUI AINDA
+
 Employee* readFile(FILE *file, int *numEmployees);
+
 void listEmployees(Employee *employees, int numEmployees);
+
 void closeFile(FILE *file);
+
 Employee* countingSort(Employee array[], int size);
+
 void saveToFile(Employee array[], int size, char *fileName);
+
 char* convertEmployeesToString(Employee array[], int size);
+
+/* FUNÇÕES ARVORE AVL */
 
 struct NO_arvoreAVL{
     Employee dados;
@@ -48,9 +56,7 @@ void confirmaInsercaoArvoreAVL(int x);
 
 int insere_arvAVL(arvAVL *raiz, Employee *dados);
 
-int remove_arvAVL(arvAVL *raiz, int valor);
-
-int consulta_arvAVL(arvAVL *raiz, int valor);
+/* FUNÇÕES ARVORE RUBRO NEGRA */
 
 struct NO_arvoreLLRB{
     Employee dados;
@@ -62,12 +68,17 @@ struct NO_arvoreLLRB{
 typedef struct NO_arvoreLLRB* arvoreLLRB;
 
 arvoreLLRB* cria_arvoreLLRB();
+
 void liberar_arvoreLLRB(arvoreLLRB *raiz);
+
 int vazia_arvoreLLRB(arvoreLLRB *raiz);
+
 int altura_arvoreLLRB(arvoreLLRB *raiz);
+
 int totalNO_arvoreLLRB(arvoreLLRB *raiz);
+
 void emOrdem_arvoreLLRB(arvoreLLRB *raiz);
-int consulta_arvoreLLRB(arvoreLLRB *raiz, int valor);
+
 int insere_arvoreLLRB(arvoreLLRB *raiz, Employee *dados);
+
 void confirmaInsercaoArvoreLLRB(int x);
-int remove_arvoreLLRB(arvoreLLRB *raiz, int valor);
