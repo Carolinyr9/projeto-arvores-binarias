@@ -41,7 +41,7 @@ int main() {
 
         switch (opcao) {
             case 1:
-                printf("Você escolheu a opção de arquivo ordenado.\n");
+                printf("Voce escolheu a opcao de arquivo ordenado.\n");
 
                 // Chamar a função alocarMassa e medir tempos
                 alocarMassa(1, numEmployees, &tempoAVL, &tempoLLRB);
@@ -62,7 +62,7 @@ int main() {
                 break;
 
             case 2:
-                printf("Você escolheu a opção de arquivo desordenado.\n");
+                printf("Voce escolheu a opcao de arquivo desordenado.\n");
 
                 // Chamar a função alocarMassa e medir tempos
                 alocarMassa(0, numEmployees, &tempoAVL, &tempoLLRB);
@@ -136,10 +136,7 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
 
     for(int i = 0; i < numElementos; i++) {
         check = insere_arvAVL(arvoreAVL, &employees[i]);
-        confirmaInsercaoArvoreAVL(check);
     }
-
-    emOrdem_arvAVL(arvoreAVL);
 
     closeFile(file);
 
@@ -154,10 +151,7 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
 
     for(int i = 0; i < numElementos; i++) {
         check = insere_arvoreLLRB(arvLLRB, &employees[i]);
-        confirmaInsercaoArvoreLLRB(check);
     }
-
-    emOrdem_arvoreLLRB(arvLLRB);
 
     closeFile(file);
 

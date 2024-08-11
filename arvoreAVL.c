@@ -106,28 +106,6 @@ int totalNO_arvAVL(arvAVL * raiz){
     return(alt_esq + alt_dir + 1);
 }
 
-void emOrdem_arvAVL(arvAVL *raiz){
-    if(raiz == NULL || *raiz == NULL){
-        return;
-    }
-    emOrdem_arvAVL(&((*raiz)->esq));
-    printf("%d\n", (*raiz)->dados.id);
-    printf("%s\n", (*raiz)->dados.name);
-    printf("%d\n", (*raiz)->dados.age);
-    printf("%s\n", (*raiz)->dados.company);
-    printf("%s\n", (*raiz)->dados.department);
-    printf("%.2f\n\n", (*raiz)->dados.salary);
-    emOrdem_arvAVL(&((*raiz)->dir));
-}
-
-void confirmaInsercaoArvoreAVL(int x){
-    if(x){
-        printf("Elemento inserido com sucesso na arvore AVL. \n");
-    }else{
-        printf("Erro! Elemento nao inserido na arvore AVL. \n");
-    }
-}
-
 int insere_arvAVL(arvAVL *raiz, Employee *employee){
     int res;
     if (*raiz == NULL) {

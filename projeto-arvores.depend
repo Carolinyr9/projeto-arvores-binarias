@@ -40,14 +40,14 @@
 	<stdlib.h>
 	"projeto-arvores.h"
 
-1723333432 source:c:\users\jessi\documents\projeto-arvores-binarias\arvoreavl.c
+1723336086 source:c:\users\jessi\documents\projeto-arvores-binarias\arvoreavl.c
 	<stdio.h>
 	<stdlib.h>
 	"projeto-arvores.h"
 
-1723333670 c:\users\jessi\documents\projeto-arvores-binarias\projeto-arvores.h
+1723336084 c:\users\jessi\documents\projeto-arvores-binarias\projeto-arvores.h
 
-1723332475 source:c:\users\jessi\documents\projeto-arvores-binarias\main.c
+1723334263 source:c:\users\jessi\documents\projeto-arvores-binarias\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -59,7 +59,7 @@
 	<string.h>
 	"projeto-arvores.h"
 
-1723333273 source:c:\users\jessi\documents\projeto-arvores-binarias\arvorellrb.c
+1723336088 source:c:\users\jessi\documents\projeto-arvores-binarias\arvorellrb.c
 	<stdio.h>
 	<stdlib.h>
 	"projeto-arvores.h"

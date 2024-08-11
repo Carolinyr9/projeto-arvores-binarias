@@ -50,10 +50,6 @@ int altura_arvAVL(arvAVL *raiz);
 
 int totalNO_arvAVL(arvAVL * raiz);
 
-void emOrdem_arvAVL(arvAVL *raiz);
-
-void confirmaInsercaoArvoreAVL(int x);
-
 int insere_arvAVL(arvAVL *raiz, Employee *dados);
 
 /* FUNÇÕES ARVORE RUBRO NEGRA */
@@ -77,8 +73,4 @@ int altura_arvoreLLRB(arvoreLLRB *raiz);
 
 int totalNO_arvoreLLRB(arvoreLLRB *raiz);
 
-void emOrdem_arvoreLLRB(arvoreLLRB *raiz);
-
 int insere_arvoreLLRB(arvoreLLRB *raiz, Employee *dados);
-
-void confirmaInsercaoArvoreLLRB(int x);

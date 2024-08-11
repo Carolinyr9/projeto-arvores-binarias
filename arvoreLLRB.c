@@ -140,20 +140,6 @@ int totalNO_arvoreLLRB(arvoreLLRB *raiz){
     return(alt_esq + alt_dir + 1);
 }
 
-void emOrdem_arvoreLLRB(arvoreLLRB *raiz){
-    if(raiz == NULL || *raiz == NULL){
-        return;
-    }
-    emOrdem_arvoreLLRB(&((*raiz)->esq));
-    printf("%d\n", (*raiz)->dados.id);
-    printf("%s\n", (*raiz)->dados.name);
-    printf("%d\n", (*raiz)->dados.age);
-    printf("%s\n", (*raiz)->dados.company);
-    printf("%s\n", (*raiz)->dados.department);
-    printf("%.2f\n\n", (*raiz)->dados.salary);
-    emOrdem_arvoreLLRB(&((*raiz)->dir));
-}
-
 int insere_arvoreLLRB(arvoreLLRB *raiz, Employee *dados){
     int resp;
     *raiz = insereNO(*raiz, dados, &resp);
@@ -197,12 +183,4 @@ struct NO_arvoreLLRB *insereNO(struct NO_arvoreLLRB *H, Employee *dados, int *re
         trocaCor(H);
     }
     return H;
-}
-
-void confirmaInsercaoArvoreLLRB(int x){
-    if(x){
-        printf("Elemento inserido com sucesso na arvore rubro negra. \n");
-    }else{
-        printf("Erro! Elemento nao inserido na arvore rubro negra. \n");
-    }
 }
