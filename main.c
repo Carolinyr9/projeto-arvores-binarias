@@ -25,8 +25,19 @@ int main() {
     char *fileName = "testeDados.csv";
     FILE *file = openFile(fileName);
 
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo %s\n", fileName);
+        return 1;
+    }
+
     int numEmployees = 13;
     Employee *employees = readFile(file, &numEmployees);
+
+    if (employees == NULL) {
+        printf("Erro ao ler os dados do arquivo %s\n", fileName);
+        closeFile(file);
+        return 1;
+    }
 
     Employee *sortedEmployees = countingSort(employees, numEmployees);
 
@@ -37,59 +48,47 @@ int main() {
 
     do {
         exibirMenu();
-        scanf("%d", &opcao);
+        while (scanf("%d", &opcao) != 1) {
+            printf("Entrada inválida. Tente novamente: ");
+            while (getchar() != '\n'); // Limpar o buffer
+        }
 
         switch (opcao) {
             case 1:
                 printf("Voce escolheu a opcao de arquivo ordenado.\n");
-
-                // Chamar a função alocarMassa e medir tempos
                 alocarMassa(1, numEmployees, &tempoAVL, &tempoLLRB);
-
-                // Exibir tempos
                 printf("Tempo AVL: %f segundos\n", tempoAVL);
                 printf("Tempo LLRB: %f segundos\n", tempoLLRB);
-
-                // Pausar o sistema
                 #ifdef _WIN32
                     system("pause");
                 #else
                     printf("Pressione Enter para continuar...\n");
-                    getchar();  // Consumir o Enter deixado pelo scanf
+                    while (getchar() != '\n'); // Limpar o buffer
                     getchar();  // Aguardar o Enter do usuário
                 #endif
-
                 break;
 
             case 2:
                 printf("Voce escolheu a opcao de arquivo desordenado.\n");
-
-                // Chamar a função alocarMassa e medir tempos
                 alocarMassa(0, numEmployees, &tempoAVL, &tempoLLRB);
-
-                // Exibir tempos
                 printf("Tempo AVL: %f segundos\n", tempoAVL);
                 printf("Tempo LLRB: %f segundos\n", tempoLLRB);
-
-                // Pausar o sistema
                 #ifdef _WIN32
                     system("pause");
                 #else
                     printf("Pressione Enter para continuar...\n");
-                    getchar();  // Consumir o Enter deixado pelo scanf
+                    while (getchar() != '\n'); // Limpar o buffer
                     getchar();  // Aguardar o Enter do usuário
                 #endif
-
                 break;
 
             case 3:
                 printf("Saindo...\n");
-
                 #ifdef _WIN32
                     system("pause");
                 #else
                     printf("Pressione Enter para sair...\n");
-                    getchar();  // Consumir o Enter deixado pelo scanf
+                    while (getchar() != '\n'); // Limpar o buffer
                     getchar();  // Aguardar o Enter do usuário
                 #endif
                 break;
@@ -111,7 +110,6 @@ int main() {
     closeFile(file);
 
     printf("\n\n");
-    system("pause");
     return 0;
 }
 
@@ -127,12 +125,26 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
         fileName = "testeDados.csv";
     }
 
-    // Começar a contabilizar o tempo para AVL
     clock_t startAVL = clock();
 
     FILE *file = openFile(fileName);
 
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo %s\n", fileName);
+        liberar_arvAVL(arvoreAVL);
+        liberar_arvoreLLRB(arvLLRB);
+        return;
+    }
+
     Employee *employees = readFile(file, &numElementos);
+
+    if (employees == NULL) {
+        printf("Erro ao ler os dados do arquivo %s\n", fileName);
+        closeFile(file);
+        liberar_arvAVL(arvoreAVL);
+        liberar_arvoreLLRB(arvLLRB);
+        return;
+    }
 
     for(int i = 0; i < numElementos; i++) {
         check = insere_arvAVL(arvoreAVL, &employees[i]);
@@ -140,14 +152,19 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
 
     closeFile(file);
 
-    // Parar de contabilizar o tempo AVL
     clock_t endAVL = clock();
     *tempoAVL = (double)(endAVL - startAVL) / CLOCKS_PER_SEC;
 
-    // Começar a contabilizar o tempo para LLRB
     clock_t startLLRB = clock();
 
     file = openFile(fileName);
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo %s\n", fileName);
+        liberar_arvAVL(arvoreAVL);
+        liberar_arvoreLLRB(arvLLRB);
+        return;
+    }
 
     for(int i = 0; i < numElementos; i++) {
         check = insere_arvoreLLRB(arvLLRB, &employees[i]);
@@ -155,7 +172,6 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
 
     closeFile(file);
 
-    // Parar de contabilizar o tempo LLRB
     clock_t endLLRB = clock();
     *tempoLLRB = (double)(endLLRB - startLLRB) / CLOCKS_PER_SEC;
 
