@@ -3,141 +3,139 @@
 #include <string.h>
 #include "projeto-arvores.h"
 
-FILE* openFile(char *fileName) {
-    FILE *file = fopen(fileName, "r");
-    if (file == NULL) {
-        printf("Erro de abertura no arquivo!\n");
+FILE* abrirArquivo(char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
         system("pause");
         exit(1);
     }
-    return file;
+    return arquivo;
 }
 
-Employee* readFile(FILE *file, int *numEmployees) {
-    size_t capacity = 13;
-    *numEmployees = 0;
-    Employee *employees = malloc(capacity * sizeof(Employee));
-    if (!employees) {
-        perror("Erro de alocacao de memoria\n");
+Funcionario* lerArquivo(FILE *arquivo, int *numFuncionarios) {
+    size_t capacidade = 14999;
+    *numFuncionarios = 0;
+    Funcionario *funcionarios = malloc(capacidade * sizeof(Funcionario));
+    if (!funcionarios) {
+        perror("Erro de alocação de memória\n");
         exit(1);
     }
 
     char buffer[1024];
-    while (fgets(buffer, sizeof(buffer), file) != NULL) {
-        if (*numEmployees >= capacity) {
-            capacity *= 2;
-            employees = realloc(employees, capacity * sizeof(Employee));
-            if (!employees) {
-                perror("Erro de alocacao de memoria\n");
+    while (fgets(buffer, sizeof(buffer), arquivo) != NULL) {
+        if (*numFuncionarios >= capacidade) {
+            capacidade *= 2;
+            funcionarios = realloc(funcionarios, capacidade * sizeof(Funcionario));
+            if (!funcionarios) {
+                perror("Erro de alocação de memória\n");
                 exit(1);
             }
         }
 
-        Employee employee;
-        employee.id = atoi(strtok(buffer, ","));
-        employee.name = strdup(strtok(NULL, ","));
-        employee.age = atoi(strtok(NULL, ","));
-        employee.company = strdup(strtok(NULL, ","));
-        employee.department = strdup(strtok(NULL, ","));
-        employee.salary = atof(strtok(NULL, "\n"));
+        Funcionario funcionario;
+        funcionario.id = atoi(strtok(buffer, ";"));
+        funcionario.nome = strdup(strtok(NULL, ";"));
+        funcionario.idade = atoi(strtok(NULL, ";"));
+        funcionario.empresa = strdup(strtok(NULL, ";"));
+        funcionario.departamento = strdup(strtok(NULL, ";"));
+        funcionario.salario = atof(strtok(NULL, "\n"));
 
-        employees[*numEmployees] = employee;
-        (*numEmployees)++;
+        funcionarios[*numFuncionarios] = funcionario;
+        (*numFuncionarios)++;
     }
 
-    return employees;
+    return funcionarios;
 }
 
-// Test function to verify if the employees are being read correctly
-void listEmployees(Employee *employees, int numEmployees) {
-    for (int i = 0; i < numEmployees; i++) {
-        printf("ID: %d, Name: %s, Age: %d, Company: %s, Department: %s, Salary: %.2f\n",
-               employees[i].id, employees[i].name, employees[i].age, employees[i].company,
-               employees[i].department, employees[i].salary);
+void listarFuncionarios(Funcionario *funcionarios, int numFuncionarios) {
+    for (int i = 0; i < numFuncionarios; i++) {
+        printf("ID: %d, Nome: %s, Idade: %d, Empresa: %s, Departamento: %s, Salário: %.2f\n",
+               funcionarios[i].id, funcionarios[i].nome, funcionarios[i].idade,
+               funcionarios[i].empresa, funcionarios[i].departamento, funcionarios[i].salario);
     }
 }
 
-void closeFile(FILE *file) {
-    fclose(file);
+void fecharArquivo(FILE *arquivo) {
+    fclose(arquivo);
 }
 
-// Counting sort function
-Employee* countingSort(Employee array[], int size) {
-    if (size <= 0) return NULL;
+Funcionario* ordenacaoPorContagem(Funcionario array[], int tamanho) {
+    if (tamanho <= 0) return NULL;
 
-    int maxVal = array[0].id;
-    for (int i = 1; i < size; i++) {
-        if (array[i].id > maxVal) {
-            maxVal = array[i].id;
+    int valorMaximo = array[0].id;
+    for (int i = 1; i < tamanho; i++) {
+        if (array[i].id > valorMaximo) {
+            valorMaximo = array[i].id;
         }
     }
 
-    int *count = (int *)calloc(maxVal + 1, sizeof(int));
-    Employee *output = (Employee *)malloc(size * sizeof(Employee));
+    int *contagem = (int *)calloc(valorMaximo + 1, sizeof(int));
+    Funcionario *saida = (Funcionario *)malloc(tamanho * sizeof(Funcionario));
 
-    for (int i = 0; i < size; i++) {
-        count[array[i].id]++;
+    for (int i = 0; i < tamanho; i++) {
+        contagem[array[i].id]++;
     }
 
-    for (int i = 1; i <= maxVal; i++) {
-        count[i] += count[i - 1];
+    for (int i = 1; i <= valorMaximo; i++) {
+        contagem[i] += contagem[i - 1];
     }
 
-    for (int i = size - 1; i >= 0; i--) {
-        output[count[array[i].id] - 1] = array[i];
-        count[array[i].id]--;
+    for (int i = tamanho - 1; i >= 0; i--) {
+        saida[contagem[array[i].id] - 1] = array[i];
+        contagem[array[i].id]--;
     }
 
-    free(count);
-    return output;
+    free(contagem);
+    return saida;
 }
 
-void saveToFile(Employee array[], int size, char *fileName) {
-    FILE *file = fopen(fileName, "w");
-    if (file == NULL) {
-        printf("Error opening file!\n");
+void salvarEmArquivo(Funcionario array[], int tamanho, char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para gravação!\n");
         system("pause");
         exit(1);
     }
 
-    char *data = convertEmployeesToString(array, size);
-    fputs(data, file);
+    char *dados = converterFuncionariosParaString(array, tamanho);
+    fputs(dados, arquivo);
 
-    fclose(file);
-    free(data); // Libera a memória alocada para a string
+    fclose(arquivo);
+    free(dados);
 }
 
-char* convertEmployeesToString(Employee array[], int size) {
-    char* line = malloc(1024 * size);
-    if (line == NULL) {
-        perror("Memory allocation failed");
+char* converterFuncionariosParaString(Funcionario array[], int tamanho) {
+    char* linha = malloc(1024 * tamanho);
+    if (linha == NULL) {
+        perror("Falha na alocação de memória");
         exit(EXIT_FAILURE);
     }
-    line[0] = '\0';
+    linha[0] = '\0';
 
     char temp[300];
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < tamanho; i++) {
         sprintf(temp, "%d", array[i].id);
-        strcat(line, temp);
-        strcat(line, ",");
+        strcat(linha, temp);
+        strcat(linha, ",");
 
-        strcat(line, array[i].name);
-        strcat(line, ",");
+        strcat(linha, array[i].nome);
+        strcat(linha, ",");
 
-        sprintf(temp, "%d", array[i].age);
-        strcat(line, temp);
-        strcat(line, ",");
+        sprintf(temp, "%d", array[i].idade);
+        strcat(linha, temp);
+        strcat(linha, ",");
 
-        strcat(line, array[i].company);
-        strcat(line, ",");
+        strcat(linha, array[i].empresa);
+        strcat(linha, ",");
 
-        strcat(line, array[i].department);
-        strcat(line, ",");
+        strcat(linha, array[i].departamento);
+        strcat(linha, ",");
 
-        sprintf(temp, "%.2f", array[i].salary);
-        strcat(line, temp);
-        strcat(line, "\n");
+        sprintf(temp, "%.2f", array[i].salario);
+        strcat(linha, temp);
+        strcat(linha, "\n");
     }
 
-    return line;
+    return linha;
 }

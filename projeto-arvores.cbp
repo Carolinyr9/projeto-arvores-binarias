@@ -31,6 +31,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="arvoreAVL.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="arvoreAVL.h" />
+		<Unit filename="arvoreLLRB.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
