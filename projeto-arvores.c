@@ -14,7 +14,7 @@ FILE* openFile(char *fileName) {
 }
 
 Employee* readFile(FILE *file, int *numEmployees) {
-    size_t capacity = 13;
+    size_t capacity = 14999;
     *numEmployees = 0;
     Employee *employees = malloc(capacity * sizeof(Employee));
     if (!employees) {
@@ -34,11 +34,11 @@ Employee* readFile(FILE *file, int *numEmployees) {
         }
 
         Employee employee;
-        employee.id = atoi(strtok(buffer, ","));
-        employee.name = strdup(strtok(NULL, ","));
-        employee.age = atoi(strtok(NULL, ","));
-        employee.company = strdup(strtok(NULL, ","));
-        employee.department = strdup(strtok(NULL, ","));
+        employee.id = atoi(strtok(buffer, ";"));
+        employee.name = strdup(strtok(NULL, ";"));
+        employee.age = atoi(strtok(NULL, ";"));
+        employee.company = strdup(strtok(NULL, ";"));
+        employee.department = strdup(strtok(NULL, ";"));
         employee.salary = atof(strtok(NULL, "\n"));
 
         employees[*numEmployees] = employee;

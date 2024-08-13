@@ -22,7 +22,7 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
 int main() {
     double tempoAVL = 0.0;
     double tempoLLRB = 0.0;
-    char *fileName = "testeDados.csv";
+    char *fileName = "massaDados.csv";
     FILE *file = openFile(fileName);
 
     if (file == NULL) {
@@ -30,7 +30,7 @@ int main() {
         return 1;
     }
 
-    int numEmployees = 13;
+    int numEmployees = 14999;
     Employee *employees = readFile(file, &numEmployees);
 
     if (employees == NULL) {
@@ -49,7 +49,7 @@ int main() {
     do {
         exibirMenu();
         while (scanf("%d", &opcao) != 1) {
-            printf("Entrada inválida. Tente novamente: ");
+            printf("Entrada invï¿½lida. Tente novamente: ");
             while (getchar() != '\n'); // Limpar o buffer
         }
 
@@ -57,44 +57,37 @@ int main() {
             case 1:
                 printf("Voce escolheu a opcao de arquivo ordenado.\n");
                 alocarMassa(1, numEmployees, &tempoAVL, &tempoLLRB);
-                printf("Tempo AVL: %f segundos\n", tempoAVL);
-                printf("Tempo LLRB: %f segundos\n", tempoLLRB);
+                printf("Tempo AVL: %f microsegundos\n", tempoAVL);
+                printf("Tempo LLRB: %f microsegundos\n", tempoLLRB);
                 #ifdef _WIN32
                     system("pause");
                 #else
                     printf("Pressione Enter para continuar...\n");
                     while (getchar() != '\n'); // Limpar o buffer
-                    getchar();  // Aguardar o Enter do usuário
+                    getchar();  // Aguardar o Enter do usuï¿½rio
                 #endif
                 break;
 
             case 2:
                 printf("Voce escolheu a opcao de arquivo desordenado.\n");
                 alocarMassa(0, numEmployees, &tempoAVL, &tempoLLRB);
-                printf("Tempo AVL: %f segundos\n", tempoAVL);
-                printf("Tempo LLRB: %f segundos\n", tempoLLRB);
+                printf("Tempo AVL: %f microsegundos\n", tempoAVL);
+                printf("Tempo LLRB: %f microsegundos\n", tempoLLRB);
                 #ifdef _WIN32
                     system("pause");
                 #else
                     printf("Pressione Enter para continuar...\n");
                     while (getchar() != '\n'); // Limpar o buffer
-                    getchar();  // Aguardar o Enter do usuário
+                    getchar();  // Aguardar o Enter do usuï¿½rio
                 #endif
                 break;
 
             case 3:
                 printf("Saindo...\n");
-                #ifdef _WIN32
-                    system("pause");
-                #else
-                    printf("Pressione Enter para sair...\n");
-                    while (getchar() != '\n'); // Limpar o buffer
-                    getchar();  // Aguardar o Enter do usuário
-                #endif
                 break;
 
             default:
-                printf("Opção inválida.\n");
+                printf("Opcao invalida.\n");
                 break;
         }
     } while (opcao != 3);
@@ -122,7 +115,7 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
     if(dadosOrdenados == 1) {
         fileName = "dadosOrdenados.csv";
     } else {
-        fileName = "testeDados.csv";
+        fileName = "massaDados.csv";
     }
 
     clock_t startAVL = clock();
@@ -153,7 +146,7 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
     closeFile(file);
 
     clock_t endAVL = clock();
-    *tempoAVL = (double)(endAVL - startAVL) / CLOCKS_PER_SEC;
+    *tempoAVL = (double)(endAVL - startAVL) / CLOCKS_PER_SEC * 1000000;
 
     clock_t startLLRB = clock();
 
@@ -173,7 +166,7 @@ void alocarMassa(int dadosOrdenados, int numElementos, double *tempoAVL, double 
     closeFile(file);
 
     clock_t endLLRB = clock();
-    *tempoLLRB = (double)(endLLRB - startLLRB) / CLOCKS_PER_SEC;
+    *tempoLLRB = (double)(endLLRB - startLLRB) / CLOCKS_PER_SEC * 1000000;
 
     liberar_arvAVL(arvoreAVL);
     liberar_arvoreLLRB(arvLLRB);

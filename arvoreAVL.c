@@ -143,7 +143,7 @@ int insere_arvAVL(arvAVL *raiz, Employee *employee){
             }
         }
     } else {
-        printf("Elemento %d já existe. Insercao duplicada! \n", employee->id);
+        printf("Elemento %d ja existe. Insercao duplicada! \n", employee->id);
         return 0;
     }
     atual->alt = maior(alt_no(atual->esq), alt_no(atual->dir)) + 1;
